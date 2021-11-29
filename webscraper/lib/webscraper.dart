@@ -5,6 +5,6 @@ void fetch(){
   .then((response){
     if (response.statusCode == 200) {
       print(response.body);
-    }
+  }
   });
 }
