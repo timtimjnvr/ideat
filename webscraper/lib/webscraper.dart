@@ -1,21 +1,45 @@
 import 'package:http/http.dart' as http;
 import 'package:web_scraper/web_scraper.dart';
 
-void fetch() async {
-  /*http.get(Uri.parse('https://www.amazon.fr/s?k=oeuf')).then((response) {
-    if (response.statusCode == 200) {
-      print(response.body);
-    }
-  });*/
+void getProductInfos(String productDescription) {}
+void fetchAmazonProducts(String product) async {
   final webScraper = WebScraper('https://www.amazon.fr');
-  if (await webScraper.loadWebPage('/s?k=oeuf')) {
+  if (await webScraper.loadWebPage('/s?k=' + product)) {
     List<Map<String, dynamic>> elements = webScraper.getElement(
         'div[data-component-type="s-search-result"] > * > span > * > * > *',
         ['class']);
+
     //print(elements);
+
     for (var element in elements) {
       if ((element['title'] as String).toLowerCase().contains("monoprix")) {
-        print(element['title']);
+        //print(element['title']);
+        var tab = element['title'].split("-");
+
+        var title = tab[0];
+        var rest = tab[1];
+
+        //print(rest);
+
+        RegExp stringPriceRegex =
+            RegExp(r'[0-9]{1,10},[0-9]{1,2}€.\([0-9]{1,10},[0-9]{1,2}.€');
+
+        var stringPriceMatches = stringPriceRegex.allMatches(rest);
+
+        var stringPrice = stringPriceMatches.first.group(0);
+
+        print(stringPrice);
+
+        if (stringPrice != null) {
+          var tabPrices = stringPrice.split("(");
+          var totalPrice = tabPrices[0];
+          var unityPrice = tabPrices[1];
+
+          print(totalPrice);
+          print(unityPrice);
+        } else {
+          break;
+        }
       }
     }
   }
