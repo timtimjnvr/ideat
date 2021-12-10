@@ -1,48 +1,66 @@
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:web_scraper/web_scraper.dart';
 
-void getProductInfos(String productDescription) {}
-void fetchAmazonProducts(String product) async {
+class Product {
+  String? title, price, unityPrice;
+  Product(this.title, this.price, this.unityPrice);
+}
+
+//analyse Product Description to build the product Object
+Product? getProduct(String productDescription) {
+  var tab = productDescription.split("-");
+
+  var title = tab[0];
+  var restOfProductDescription = tab[1];
+
+  //looking for this type of expr : "9,39€ (117,38 €/"
+  //the first price is product price and the second unit price (kg/L or unity)
+  RegExp pricesRegex =
+      RegExp(r'[0-9]{1,10},[0-9]{1,2}€.\([0-9]{1,10},[0-9]{1,2}.€');
+
+  var stringPriceMatches = pricesRegex.allMatches(restOfProductDescription);
+  var prices = stringPriceMatches.first.group(0);
+
+  if (prices != null) {
+    //separate two prices
+    var tabPrices = prices.split("(");
+
+    var price = tabPrices[0];
+    var unitPrice = tabPrices[1];
+
+    return Product(title, price, unitPrice);
+  } else {
+    return null;
+  }
+}
+
+Future<List<Product>> fetchAmazonProducts(
+    String productName, String provider) async {
+  List<Product> products = [];
+
   final webScraper = WebScraper('https://www.amazon.fr');
-  if (await webScraper.loadWebPage('/s?k=' + product)) {
-    List<Map<String, dynamic>> elements = webScraper.getElement(
+
+  if (await webScraper.loadWebPage('/s?k=' + productName)) {
+    List<Map<String, dynamic>> domElements = webScraper.getElement(
         'div[data-component-type="s-search-result"] > * > span > * > * > *',
         ['class']);
 
-    //print(elements);
+    for (var domElement in domElements) {
+      //get only provider's products
+      if ((domElement['title'] as String).toLowerCase().contains(provider)) {
+        var productDescription = domElement['title'] as String;
 
-    for (var element in elements) {
-      if ((element['title'] as String).toLowerCase().contains("monoprix")) {
-        //print(element['title']);
-        var tab = element['title'].split("-");
+        Product? product = getProduct(productDescription);
 
-        var title = tab[0];
-        var rest = tab[1];
-
-        //print(rest);
-
-        RegExp stringPriceRegex =
-            RegExp(r'[0-9]{1,10},[0-9]{1,2}€.\([0-9]{1,10},[0-9]{1,2}.€');
-
-        var stringPriceMatches = stringPriceRegex.allMatches(rest);
-
-        var stringPrice = stringPriceMatches.first.group(0);
-
-        print(stringPrice);
-
-        if (stringPrice != null) {
-          var tabPrices = stringPrice.split("(");
-          var totalPrice = tabPrices[0];
-          var unityPrice = tabPrices[1];
-
-          print(totalPrice);
-          print(unityPrice);
-        } else {
-          break;
+        if (product != null) {
+          products.add(product);
         }
       }
     }
   }
+
+  return products;
 }
 
 /*

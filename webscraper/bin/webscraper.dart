@@ -1,5 +1,5 @@
 import 'package:webscraper/webscraper.dart' as webscraper;
 
-void main(List<String> arguments) {
-  webscraper.fetchAmazonProducts("oeuf");
+Future<List<webscraper.Product>> main(List<String> arguments) {
+  return webscraper.fetchAmazonProducts("oeuf", "monoprix");
 }
