@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:web_scraper/web_scraper.dart';
+import 'dart:convert';
 
 class Product {
   String? title, price, unityPrice;
   Product(this.title, this.price, this.unityPrice);
+
+  getProduct() {
+    return {"title": title, "price": price, "unityPrice": unityPrice};
+  }
 }
 
 //analyse Product Description to build the product Object
@@ -59,7 +64,10 @@ Future<List<Product>> fetchAmazonProducts(
       }
     }
   }
+  //JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+  //String prettyprint = encoder.convert(products);
 
+  products.forEach((product) => print(product.getProduct()));
   return products;
 }
 
