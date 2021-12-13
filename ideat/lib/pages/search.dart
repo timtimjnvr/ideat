@@ -1,37 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:ideat/pages/receip_detail.dart';
 
 void main() {
-  runApp(const Search());
+  runApp(const MyApp());
 }
 
-class Search extends StatefulWidget {
-  const Search({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Title of Application',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const MyHomePage(),
+    );
+  }
 }
 
-class _SearchPageState extends State<Search> {
-  PageController _pageController = PageController();
-  List<Widget> _screens = [Search(), Receip_detail()];
-  void _onPageChanged(int selectedIndex) {
-    print(selectedIndex);
-  }
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
 
-  void _onItemTapped(int index) {}
+  @override
+  State<StatefulWidget> createState() {
+    return MyHomePageState();
+  }
+}
+
+class MyHomePageState extends State<MyHomePage> {
+  int tapCount = 0;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        children: _screens,
-        onPageChanged: _onPageChanged,
-        physics: NeverScrollableScrollPhysics(),
+      appBar: AppBar(
+        title: const Text("BottomNavigationBar Example"),
+      ),
+      body: Center(
+          child: ElevatedButton(
+            child:Text("Tap Count: " +
+              tapCount.toString() +
+              ", Index: " +
+              selectedIndex.toString()),
+            onPressed: null,
+              ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        //currentIndex: selectedIndex,
+        currentIndex: selectedIndex,
         selectedIconTheme:
             const IconThemeData(color: Colors.red, opacity: 1.0, size: 30),
         backgroundColor: Colors.orange.shade100,
@@ -52,9 +70,16 @@ class _SearchPageState extends State<Search> {
           )
         ],
         onTap: (int index) {
-          //onTapHandler(index);
+          onTapHandler(index);
         },
       ),
     );
+  }
+
+  void onTapHandler(int index) {
+    setState(() {
+      tapCount++;
+      selectedIndex = index;
+    });
   }
 }
