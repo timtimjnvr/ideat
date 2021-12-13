@@ -2,15 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:web_scraper/web_scraper.dart';
 import 'dart:convert';
-
-class Product {
-  String? title, price, unity;
-  Product(this.title, this.price, this.unity);
-
-  getProduct() {
-    return {"title": title, "price": price, "unity": unity};
-  }
-}
+import 'package:webscraper/product.dart';
 
 RegExp pricesRegex = RegExp(r'[0-9]{1,10},[0-9]{1,2}.€\/[^\s,)]{1,10}');
 
