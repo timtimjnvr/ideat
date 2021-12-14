@@ -1,11 +1,11 @@
 /// ideat_server
 ///
-/// A Aqueduct web server.
+/// A liquidart web server.
 library ideat_server;
 
 export 'dart:async';
 export 'dart:io';
 
-export 'package:aqueduct/aqueduct.dart';
+export 'package:liquidart/liquidart.dart';
 
 export 'channel.dart';
