@@ -1,6 +1,6 @@
 /// ideat_server
 ///
-/// A liquidart web server.
+/// A Liquidart web server.
 library ideat_server;
 
 export 'dart:async';

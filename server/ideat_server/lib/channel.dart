@@ -1,5 +1,5 @@
-import 'package:ideat_server/ideat_server.dart';
-import 'package:ideat_server/ApiController.dart';
+import 'ApiController.dart';
+import 'ideat_server.dart';
 
 /// This type initializes an application.
 ///
