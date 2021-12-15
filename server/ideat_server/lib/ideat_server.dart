@@ -1,4 +1,4 @@
-/// ideatserver
+/// ideat_server
 ///
 /// A conduit web server.
 library ideat_server;

@@ -6,7 +6,7 @@ export 'package:conduit_test/conduit_test.dart';
 export 'package:test/test.dart';
 export 'package:conduit/conduit.dart';
 
-/// A testing harness for ideatserver.
+/// A testing harness for ideat_server.
 ///
 /// A harness for testing an conduit application. Example test file:
 ///
