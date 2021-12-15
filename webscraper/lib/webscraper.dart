@@ -39,7 +39,6 @@ Future<List<String>> fetchTitles(
       titles.add(domElement['title'] as String);
     }
   }
-  print(titles);
   return titles;
 }
 
@@ -59,7 +58,7 @@ Future<List<Product>> fetchAmazonProducts(
       try {
         products.add(getProduct(productDescription));
       } catch (e) {
-        print(e);
+        //print(e);
       }
     }
   }
