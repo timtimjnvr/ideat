@@ -1,10 +1,10 @@
-import 'ApiController.dart';
-import 'ideat_server.dart';
+import 'package:ideat_server/ideat_server.dart';
+import 'package:ideat_server/ApiController.dart';
 
 /// This type initializes an application.
 ///
 /// Override methods in this class to set up routes and initialize services like
-/// database connections. See http://aqueduct.io/docs/http/channel/.
+/// database connections. See http://conduit.io/docs/http/channel/.
 class IdeatServerChannel extends ApplicationChannel {
   /// Initialize services in this method.
   ///

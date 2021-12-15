@@ -1,8 +1,11 @@
-import 'package:webscraper/webscraper.dart';
+import 'package:webscraper/webscraper.dart' as webscraper;
+import 'package:webscraper/product.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('calculate', () {
-    expect(calculate(), 42);
+  test('fetchAmazonProducts', () async {
+    expect(
+        (await webscraper.fetchAmazonProducts("steak", "monoprix")).length > 0,
+        true);
   });
 }
