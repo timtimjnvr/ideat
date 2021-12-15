@@ -18,7 +18,7 @@ jobs:
     strategy:
       max-parallel: 8
       matrix:
-        project: ["./webscraper", "./server/ideat_server"]
+        project: ["./webscraper"]
 
     steps:
       - uses: actions/checkout@v2
