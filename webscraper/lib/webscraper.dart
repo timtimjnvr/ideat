@@ -55,11 +55,7 @@ Future<List<Product>> fetchAmazonProducts(
     //get only provider's products
     if (title.toLowerCase().contains(provider)) {
       var productDescription = title;
-      try {
-        products.add(getProduct(productDescription));
-      } catch (e) {
-        print(e);
-      }
+      products.add(getProduct(productDescription));
     }
   }
 

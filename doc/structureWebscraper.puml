@@ -1,0 +1,20 @@
+@startuml
+
+IngredientScraperInterface <-- IngredientScraper
+IngredientScraperInterface <-- Proxy
+Proxy *--> IngredientScraper
+
+interface IngredientScraperInterface{
+    getProduct()
+}
+
+class Proxy{
+
+}
+class IngredientScraper{
+    --
+    getProduct()
+}
+
+
+@enduml
