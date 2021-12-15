@@ -7,9 +7,9 @@ name: Dart CI
 
 on:
   push:
-    branches: [ main, feat/ci ]
+    branches: [main, feat/ci]
   pull_request:
-    branches: [ main, feat/ci ]
+    branches: [main, feat/ci]
 
 jobs:
   build:
@@ -48,4 +48,4 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Run tests
         working-directory: ${{ matrix.project }}
-        run: dart test
+        run: dart test --chain-stack-traces
