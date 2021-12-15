@@ -19,3 +19,4 @@ void main() {
     expect(product.price, "7,49 €");
     expect(product.unity, "kg");
   });
+}
