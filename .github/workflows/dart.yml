@@ -48,7 +48,7 @@ jobs:
       # want to change this to 'flutter test'.
       - name: Run
         working-directory: ${{ matrix.project }}
-        run: dart run
+        run: dart run webscraper
 
       - name: Run tests
         working-directory: ${{ matrix.project }}
