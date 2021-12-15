@@ -57,8 +57,14 @@ Future<List<Product>> fetchAmazonProducts(
       var productDescription = title;
       try {
         products.add(getProduct(productDescription));
-      } catch (e) {}
+      } catch (e) {
+        print(e);
+      }
     }
+  }
+
+  for (var product in products) {
+    print(product.getProduct());
   }
 
   return products;
