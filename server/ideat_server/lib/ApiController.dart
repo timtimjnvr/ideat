@@ -5,12 +5,14 @@ class ApiController extends ResourceController {
   Future<Response> getRestMethod() async {
     final methodName = request != null ? request!.path.variables['name'] : "";
     switch (methodName) {
-      case "test": {
-        return Response.ok("This is a test");
-      }
-      default: {
-        return Response.badRequest(body: {"error": "no method"});
-      }
+      case "test":
+        {
+          return Response.ok("This is a test");
+        }
+      default:
+        {
+          return Response.badRequest(body: {"error": "no method"});
+        }
     }
   }
 }
