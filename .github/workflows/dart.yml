@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Web Scraper CI
+name: Dart CI
 
 on:
   push:
@@ -15,6 +15,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      max-parallel: 8
+      matrix:
+        project:
+		- ./webscraper
+		- ./server/ideat_server
+
     steps:
       - uses: actions/checkout@v2
 
@@ -25,21 +32,22 @@ jobs:
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
       - name: Install dependencies
-        working-directory: ./webscraper
+        working-directory: ${{ matrix.project }}
         run: dart pub get
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
+      - name: Verify formatting
+        working-directory: ${{ matrix.project }}
+        run: dart format --output=none --set-exit-if-changed .
 
       # Consider passing '--fatal-infos' for slightly stricter analysis.
       - name: Analyze project source
-        working-directory: ./webscraper
+        working-directory: ${{ matrix.project }}
         run: dart analyze
 
       # Your project will need to have tests in test/ and a dependency on
       # package:test for this step to succeed. Note that Flutter projects will
       # want to change this to 'flutter test'.
       - name: Run tests
-        working-directory: ./webscraper
+        working-directory: ${{ matrix.project }}
         run: dart test
