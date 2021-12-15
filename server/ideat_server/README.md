@@ -1,4 +1,4 @@
-# ideatserver
+# ideat_server
 
 ## Running the Application Locally
 
