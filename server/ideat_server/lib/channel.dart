@@ -1,13 +1,11 @@
-import 'ApiController.dart';
-import 'ideat_server.dart';
+import 'package:ideat_server/ideat_server.dart';
+import 'package:ideat_server/ApiController.dart';
 
 /// This type initializes an application.
 ///
 /// Override methods in this class to set up routes and initialize services like
-/// database connections. See http://aldrinsartfactory.github.io/liquidart/http/channel/.
+/// database connections. See http://conduit.io/docs/http/channel/.
 class IdeatServerChannel extends ApplicationChannel {
-  ManagedContext context;
-
   /// Initialize services in this method.
   ///
   /// Implement this method to initialize services, read values from [options]
@@ -18,9 +16,6 @@ class IdeatServerChannel extends ApplicationChannel {
   Future prepare() async {
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
-
-    final config = IdeatServerConfiguration(options.configurationFilePath);
-    context = contextWithConnectionInfo(config.database);
   }
 
   /// Construct the request channel.
@@ -37,33 +32,4 @@ class IdeatServerChannel extends ApplicationChannel {
 
     return router;
   }
-
-  /*
-   * Helper methods
-   */
-
-  ManagedContext contextWithConnectionInfo(
-      DatabaseConfiguration connectionInfo) {
-    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
-    final psc = PostgreSQLPersistentStore(
-        connectionInfo.username,
-        connectionInfo.password,
-        connectionInfo.host,
-        connectionInfo.port,
-        connectionInfo.databaseName);
-
-    return ManagedContext(dataModel, psc);
-  }
-}
-
-/// An instance of this class reads values from a configuration
-/// file specific to this application.
-///
-/// Configuration files must have key-value for the properties in this class.
-/// For more documentation on configuration files, see https://aldrinsartfactory.github.io/liquidart/configure/ and
-/// https://pub.dartlang.org/packages/safe_config.
-class IdeatServerConfiguration extends Configuration {
-  IdeatServerConfiguration(String fileName) : super.fromFile(File(fileName));
-
-  DatabaseConfiguration database;
 }
