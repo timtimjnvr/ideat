@@ -39,6 +39,7 @@ Future<List<String>> fetchTitles(
       titles.add(domElement['title'] as String);
     }
   }
+  print(titles);
   return titles;
 }
 
@@ -55,13 +56,17 @@ Future<List<Product>> fetchAmazonProducts(
     //get only provider's products
     if (title.toLowerCase().contains(provider)) {
       var productDescription = title;
-      products.add(getProduct(productDescription));
+      try {
+        products.add(getProduct(productDescription));
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
-  for (var product in products) {
+  /*for (var product in products) {
     print(product.getProduct());
-  }
+  }*/
 
   return products;
 }
