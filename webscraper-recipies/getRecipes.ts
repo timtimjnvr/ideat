@@ -12,15 +12,17 @@ const query = qb
     //.withDifficulty(RECIPE_DIFFICULTY.EASY)
     .build()
 
-const recipes = async () => {
+const getRecipes = async () => {
     return await searchRecipes(query, { limit: 10 });
 };
 
 (async () => {
     try {
-        var recipies = await recipes();
-        console.log(recipies);
+        var recipies = await getRecipes();
+        //console.log(recipies);
     } catch (e) {
         // Deal with the fact the chain failed
     }
 })();
+
+export default getRecipes;
