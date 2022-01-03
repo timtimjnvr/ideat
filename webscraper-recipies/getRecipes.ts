@@ -4,12 +4,23 @@ import {Recipe} from "marmiton-api/dist/types/@types/recipe";
 
 // A query builder is provided to make complex queries
 const qb = new MarmitonQueryBuilder();
+
+enum recipePrice {
+    CHEAP,
+    MEDIUM,
+    EXPENSIVE
+}
+
+function enumConverter(enumName : any) : any{
+    return RECIPE_PRICE[enumName];
+}
+
 const query = (wordsInRecipe: string) => {
     return (
         qb
         .withTitleContaining(wordsInRecipe)
         //.withoutOven()
-        //.withPrice(RECIPE_PRICE.CHEAP)
+        .withPrice(RECIPE_PRICE.CHEAP)
         //.takingLessThan()
         //.withDifficulty(RECIPE_DIFFICULTY.EASY)
         .build())
