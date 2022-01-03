@@ -24,10 +24,6 @@ jobs:
       # - uses: dart-lang/setup-dart@v1
       - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
 
-      - name: Install dependencies
-        working-directory: "./ideat"
-        run: dart pub get
-
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
@@ -36,6 +32,10 @@ jobs:
         with:
           channel: 'dev'
   
+      - name: Install dependencies
+        working-directory: "./ideat"
+        run: flutter pub get
+
       - name: Build APK
         working-directory: "./ideat"
         run: flutter build apk --split-per-abi
