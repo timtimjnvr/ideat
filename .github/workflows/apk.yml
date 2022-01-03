@@ -1,0 +1,44 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Android APK Packaging CI
+
+on:
+  push:
+    branches: [ main, feat/ci ]
+  pull_request:
+    branches: [ main, feat/ci ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    steps:
+      - uses: actions/checkout@v2
+
+      # Note: This workflow uses the latest stable version of the Dart SDK.
+      # You can specify other versions if desired, see documentation here:
+      # https://github.com/dart-lang/setup-dart/blob/main/README.md
+      # - uses: dart-lang/setup-dart@v1
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+
+      - name: Install dependencies
+        working-directory: "./ideat"
+        run: dart pub get
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      - name: Setup Flutter Dev
+        working-directory: "./ideat"
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'dev'
+  
+      - name: Build APK
+        working-directory: "./ideat"
+        run: flutter build apk --split-per-abi
