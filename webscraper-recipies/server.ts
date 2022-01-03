@@ -1,8 +1,8 @@
-import express from "express";
+const express = require ("express");
 import routes from "./routes";
 
 const port: any = 8888;
-const app: express.Application = express();
+const app: any = express();
 
 app.use("/",routes);
 app.listen(port);

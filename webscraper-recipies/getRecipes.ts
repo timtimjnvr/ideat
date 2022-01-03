@@ -4,16 +4,18 @@ import {Recipe} from "marmiton-api/dist/types/@types/recipe";
 
 // A query builder is provided to make complex queries
 const qb = new MarmitonQueryBuilder();
-const query = qb
-    //.withTitleContaining('sauce étudiante')
-    //.withoutOven()
-    //.withPrice(RECIPE_PRICE.CHEAP)
-    //.takingLessThan()
-    //.withDifficulty(RECIPE_DIFFICULTY.EASY)
-    .build()
-
-const getRecipes = async () => {
-    return await searchRecipes(query, { limit: 10 });
+const query = (wordsInRecipe: string) => {
+    return (
+        qb
+        .withTitleContaining(wordsInRecipe)
+        //.withoutOven()
+        //.withPrice(RECIPE_PRICE.CHEAP)
+        //.takingLessThan()
+        //.withDifficulty(RECIPE_DIFFICULTY.EASY)
+        .build())
+}
+const getRecipes = async () => { 
+    return await searchRecipes(query('tarte aux pommes'), { limit: 10 });
 };
 
 (async () => {

@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "noImplicitAny": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "sourceMap": true
+    },
+    "files": [
+      "server.ts",
+      "routes.ts",
+      "getRecipes.ts",
+      "controllers/recipes.ts"
+    ]
+  }
