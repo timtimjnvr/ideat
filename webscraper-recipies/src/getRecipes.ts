@@ -6,7 +6,6 @@ import {Recipe} from "marmiton-api/dist/types/@types/recipe";
 function enumConverter(enumName : any, enumType: String) : any{
     switch (enumType){
         case "PRICE":
-            console.log(RECIPE_PRICE);
             return RECIPE_PRICE[enumName];
         case "DIFFICULTY":
             return RECIPE_DIFFICULTY[enumName];
