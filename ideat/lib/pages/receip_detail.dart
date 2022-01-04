@@ -14,6 +14,9 @@ class _Receip_detailPageState extends State<Receip_detail> {
       appBar: AppBar(
         title: Text("Receip_detail Page"),
       ),
+          body: Container(
+        color: Colors.blueAccent,
+      ),
     );
   }
 }

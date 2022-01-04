@@ -1,85 +1,50 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Search extends StatefulWidget {
+  Search({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Title of Application',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const MyHomePage(),
-    );
-  }
+  _search createState() => _search();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return MyHomePageState();
-  }
-}
-
-class MyHomePageState extends State<MyHomePage> {
-  int tapCount = 0;
-  int selectedIndex = 0;
-
+class _search extends State<Search> { List a = [
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg",
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg",
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg",
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg",
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg",
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("BottomNavigationBar Example"),
+        title: Text("Displaying Images"),
       ),
-      body: Center(
-          child: ElevatedButton(
-            child:Text("Tap Count: " +
-              tapCount.toString() +
-              ", Index: " +
-              selectedIndex.toString()),
-            onPressed: null,
+      body: ListView.builder(
+        itemBuilder: (BuildContext ctx, int index) {
+          return Padding(
+            padding: EdgeInsets.all(20),
+            child: Card(
+              shape:Border.all(width: 5, ),
+              elevation: 20,
+              color: Colors.black,
+              child: Column(
+                children: <Widget>[
+                  Image.network(a[index]),
+                  SizedBox(height: 10,),  
+                  Icon(
+                    Icons.favorite,
+                    color: Colors.yellow,
+                    size: 40,
+                  ),
+                ],
               ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        selectedIconTheme:
-            const IconThemeData(color: Colors.red, opacity: 1.0, size: 30),
-        backgroundColor: Colors.orange.shade100,
-        unselectedIconTheme:
-            const IconThemeData(color: Colors.cyan, opacity: 1.0, size: 28),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_shopping_cart_rounded),
-            title: Text("Contacts"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text("Emails"),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            title: Text("Profile"),
-          )
-        ],
-        onTap: (int index) {
-          onTapHandler(index);
+            ),
+          );
         },
+        itemCount: a.length,
       ),
     );
-  }
-
-  void onTapHandler(int index) {
-    setState(() {
-      tapCount++;
-      selectedIndex = index;
-    });
   }
 }
