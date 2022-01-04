@@ -9,7 +9,7 @@
     "files": [
       "server.ts",
       "routes.ts",
-      "getRecipes.ts",
+      "src/getRecipes.ts",
       "controllers/recipes.ts"
     ]
   }
