@@ -19,8 +19,11 @@ class PriceController extends ResourceController {
     for (var element in products) {
       productJson.add(element.getProduct());
     }
-
-    return Response.ok({"products": productJson})
-      ..contentType = ContentType.json;
+    if (productJson.length != 0) {
+      return Response.ok({"products": productJson.first})
+        ..contentType = ContentType.json;
+    } else {
+      return Response.serverError();
+    }
   }
 }
