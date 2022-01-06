@@ -1,8 +1,0 @@
-MacOS
-#.DS_Store
-# Files and directories created by pub.
-.dart_tool/
-.packages
-
-# Conventional directory for build output.
-build/

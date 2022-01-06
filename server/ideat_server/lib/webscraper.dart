@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:web_scraper/web_scraper.dart';
 import 'dart:convert';
-import 'package:webscraper/product.dart';
+import 'package:ideat_server/product.dart';
 
 RegExp pricesRegex = RegExp(r'[0-9]{1,10},[0-9]{1,2}.€\/[^\s,)]{1,10}');
 
@@ -27,17 +27,38 @@ Product getProduct(String productDescription) {
 
 Future<List<String>> fetchTitles(
     String url, String query, String selector) async {
-  List<String> titles = [];
+  final List<String> titles = [];
 
-  final webScraper = WebScraper(url);
+  final WebScraper webScraper = WebScraper(url);
+  bool loaded = false;
+  print("test bool");
 
-  if (await webScraper.loadWebPage(query)) {
-    List<Map<String, dynamic>> domElements =
-        webScraper.getElement(selector, ['class']);
+  List<Map<String, dynamic>>? domElements = null;
 
+  /*int maxTries = 100;
+  int currentAttempts = 0;
+
+  while ((!loaded || domElements == null || domElements.length == 0) &&
+      currentAttempts < maxTries) {*/
+  loaded = await webScraper.loadWebPage(query);
+  if (loaded) {
+    domElements = webScraper.getElement(selector, ['']);
+  }
+  /*currentAttempts++;
+    if (!loaded || domElements == null || domElements.length == 0)
+      sleep(Duration(seconds: 2));
+  }*/
+
+  print(webScraper.getPageContent());
+
+  loaded = loaded && domElements != null && domElements.length != 0;
+
+  if (loaded) {
     for (var domElement in domElements) {
       titles.add(domElement['title'] as String);
     }
+  } else {
+    print("page not loaded");
   }
   return titles;
 }
@@ -60,7 +81,7 @@ Future<List<Product>> fetchAmazonProducts(
       } catch (e) {}
     }
   }
-
+  print(products);
   return products;
 }
 

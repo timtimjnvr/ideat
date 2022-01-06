@@ -9,6 +9,7 @@ class ApiController extends ResourceController {
         {
           return Response.ok("This is a test");
         }
+
       default:
         {
           return Response.badRequest(body: {"error": "no method"});
