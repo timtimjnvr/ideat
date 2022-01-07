@@ -7,9 +7,9 @@ name: Dart CI
 
 on:
   push:
-    branches: [ main, feat/ci ]
+    branches: [main, feat/ci]
   pull_request:
-    branches: [ main, feat/ci ]
+    branches: [main, feat/ci]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
     strategy:
       max-parallel: 8
       matrix:
-        project: ["./webscraper", "./server/ideat_server"]
+        project: ["./server/ideat_server"]
 
     steps:
       - uses: actions/checkout@v2

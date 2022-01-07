@@ -1,5 +1,6 @@
 import 'package:ideat_server/ideat_server.dart';
-import 'package:ideat_server/ApiController.dart';
+import 'package:ideat_server/controller/PriceController.dart';
+import 'package:ideat_server/controller/ApiController.dart';
 
 /// This type initializes an application.
 ///
@@ -29,6 +30,7 @@ class IdeatServerChannel extends ApplicationChannel {
     final router = Router();
 
     router.route("/api/[:name]").link(() => ApiController());
+    router.route("/price/[:ingredientName]").link(() => PriceController());
 
     return router;
   }

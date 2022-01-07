@@ -3,7 +3,7 @@ import 'package:ideat_server/ideat_server.dart';
 Future main() async {
   final app = Application<IdeatServerChannel>()
     ..options.configurationFilePath = "config.yaml"
-    ..options.port = 8888;
+    ..options.port = 8889;
 
   await app.startOnCurrentIsolate();
 

@@ -7,7 +7,10 @@ environment:
 
 dependencies:
   conduit: ^3.0.0
+  js: ^0.6.3
+  web_scraper: ^0.1.4
 
 dev_dependencies:
+  http: ^0.13.4
   test: ^1.16.5
   conduit_test: ^3.0.0
