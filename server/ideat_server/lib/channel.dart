@@ -29,8 +29,7 @@ class IdeatServerChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    //router.route("/api/[:name]").link(() => ApiController());
-
+    router.route("/api/[:name]").link(() => ApiController());
     router.route("/price/[:ingredientName]").link(() => PriceController());
 
     return router;

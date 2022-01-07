@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:web_scraper/web_scraper.dart';
 import 'dart:convert';
-import 'package:ideat_server/product.dart';
+import 'package:ideat_server/webscraper/product.dart';
 
 RegExp pricesRegex = RegExp(r'[0-9]{1,10},[0-9]{1,2}.€\/[^\s,)]{1,10}');
 

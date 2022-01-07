@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:ideat_server/ideat_server.dart';
-import 'package:ideat_server/webscraper.dart' as webscraper;
-import 'package:ideat_server/product.dart';
+import 'package:ideat_server/webscraper/webscraper.dart' as webscraper;
+import 'package:ideat_server/webscraper/product.dart';
 
 Future<List<Product>> getPrices(String name) {
   return webscraper.fetchAmazonProducts(name, "monoprix");
@@ -20,6 +20,7 @@ class PriceController extends ResourceController {
       productJson.add(element.getProduct());
     }
     if (productJson.length != 0) {
+      //we suppose that first product from list best suites request
       return Response.ok({"products": productJson.first})
         ..contentType = ContentType.json;
     } else {
