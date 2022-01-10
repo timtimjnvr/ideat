@@ -12,7 +12,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  int tapCount = 0;
   int selectedIndex = 0;
 
   final screens = [
@@ -55,7 +54,6 @@ class MyHomePageState extends State<MyHomePage> {
 
   void onTapHandler(int index) {
     setState(() {
-      tapCount++;
       selectedIndex = index;
     });
   }
