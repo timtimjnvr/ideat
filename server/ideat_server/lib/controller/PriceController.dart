@@ -14,15 +14,17 @@ class PriceController extends ResourceController {
         request != null ? request!.path.variables['ingredientName'] : "";
 
     final List<Product> products = await getPrices(ingredientName!);
+    
     final List<Map<String, String?>> productJson = [];
 
     for (var element in products) {
+      print(element.getProduct());
       productJson.add(element.getProduct());
     }
     if (productJson.length != 0) {
       //we suppose that first product from list best suites request
-      return Response.ok({"products": productJson.first})
-        ..contentType = ContentType.json;
+      print(productJson.first);
+      return Response.ok({"product": productJson.first});
     } else {
       return Response.serverError();
     }

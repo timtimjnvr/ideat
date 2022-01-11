@@ -69,17 +69,14 @@ Future<List<Product>> fetchAmazonProducts(
 
   List<String> titles = await fetchTitles(
       'https://www.amazon.fr',
-      '/s?k=' + productName,
+      '/s?k=' + productName+'&i='+ provider,
       'div[data-component-type="s-search-result"] > * > span > * > * > *');
 
   for (var title in titles) {
-    //get only provider's products
-    if (title.toLowerCase().contains(provider)) {
-      var productDescription = title;
       try {
-        products.add(getProduct(productDescription));
+        products.add(getProduct(title));
       } catch (e) {}
-    }
+    
   }
   print(products);
   return products;
