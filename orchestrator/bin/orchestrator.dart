@@ -3,5 +3,6 @@ import 'package:http/http.dart' as http;
 
 void main(List<String> arguments) async {
   var recipes = await orchestrator.fetchRecipes();
-  print(recipes);
+  final respStr = await recipes.stream.bytesToString();
+  print(respStr);
 }
