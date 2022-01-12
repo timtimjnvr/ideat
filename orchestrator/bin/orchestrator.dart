@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-RegExp unityRegex = RegExp(r'^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)\s([a-zA-Z]*)\s');
-RegExp quantityRegex = RegExp(r'[0-9]{1,10}\s[a-zA-Z]*\s');
+RegExp unityRegex = RegExp(r'^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)\s([.àâa-zA-Z]*)');
+RegExp quantityRegex = RegExp(r'[0-9]{1,10}\s[a-zA-Z]*');
 
 class Ingredient {
   String unity = "";
@@ -12,6 +12,7 @@ class Ingredient {
   Ingredient._(this.unity, this.quantity, this.name);
 
   static Ingredient getIngredient(String ingredientDesciption) {
+    print(ingredientDesciption);
     var unityMatches = unityRegex.allMatches(ingredientDesciption);
 
     String unityString =
@@ -23,11 +24,23 @@ class Ingredient {
         unityMatches.isNotEmpty && unityMatches.first.groupCount > 1
             ? unityMatches.first.group(1) ?? ""
             : "";
+
+    if (!(unityWhiteList.contains(unityString))) {
+      unityString = "";
+    }
+    String nameString;
+    if (!(unityString == "")) {
+      var tabIngredientName = ingredientDesciption.split(unityString);
+      nameString = tabIngredientName[1];
+    } else {
+      nameString = ingredientDesciption;
+    }
     print("unity:" + unityString);
     print("quantity: " + quantityString);
+    print("name: " + nameString);
     print("");
 
-    return Ingredient._("test", "test", "test");
+    return Ingredient._(unityString, quantityString, nameString);
   }
 }
 
@@ -46,7 +59,8 @@ List<String> unityWhiteList = [
   "verre",
   "tasse",
   "sachet",
-  "pincée"
+  "pincée",
+  "morceaux"
 ];
 
 Future<http.StreamedResponse> fetchRecipes(String numberMax) {
@@ -57,13 +71,29 @@ Future<http.StreamedResponse> fetchRecipes(String numberMax) {
   return request.send();
 }
 
+Future<http.StreamedResponse> fetchIngredientPrice(String ingredientName) {
+  var url = Uri.parse("http://localhost:8889/price/" + ingredientName);
+  http.Request request = new http.Request("get", url);
+  request.headers.clear();
+  request.headers.addAll({"content-type": "application/json; charset=utf-8"});
+  return request.send();
+}
+
 void main(List<String> arguments) async {
   var recipes = await fetchRecipes("10");
-  final respStr = await recipes.stream.bytesToString();
-  final decoded = json.decode(respStr);
-  for (var recipe in decoded["recipes"]) {
+  var respRecipes = await recipes.stream.bytesToString();
+  var decodedRecipes = json.decode(respRecipes);
+  for (var recipe in decodedRecipes["recipes"]) {
+    List<Ingredient> ingredients = [];
     for (String ingredientDescription in recipe["ingredients"]) {
       Ingredient ingredient = Ingredient.getIngredient(ingredientDescription);
+      ingredients.add(ingredient);
+    }
+    for (Ingredient ingredient in ingredients) {
+      var price = await fetchIngredientPrice(ingredient.name);
+      var respPrice = await price.stream.bytesToString();
+      var decodedPrice = json.decode(respPrice);
+      print(decodedPrice);
     }
   }
 }

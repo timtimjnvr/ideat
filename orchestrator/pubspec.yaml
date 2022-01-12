@@ -9,8 +9,8 @@ environment:
 # dependencies:
 #   path: ^1.8.0
 
-dev_dependencies:x
+dev_dependencies:
   lints: ^1.0.0
   test: ^1.16.0
-dependencies: 
+dependencies:
   http: ^0.13.4
