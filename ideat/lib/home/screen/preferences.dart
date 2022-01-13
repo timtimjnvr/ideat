@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ideat/home/screen/blank_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class Preferences extends StatefulWidget {
@@ -11,7 +12,8 @@ class Preferences extends StatefulWidget {
 class _PreferencesPageState extends State<Preferences> {
   bool isSwitched = false;
   changePage() {
-    Navigator.pushNamed(context, '/rd');
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder:(context) => BlankPage()));
   }
 
   @override

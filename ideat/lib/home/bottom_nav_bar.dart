@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ideat/home/components/search_bar.dart';
+import 'package:ideat/home/screen/black_list.dart';
 import 'package:ideat/home/screen/blank_page.dart';
 import 'package:ideat/home/screen/preferences.dart';
 
@@ -17,8 +19,8 @@ class MyHomePageState extends State<MyHomePage> {
 
   final screens = [
     Preferences(),
-    BlankPage(),
-    BlankPage(),
+    BlackList(),
+    SearchBar(),
   ];
 
   @override
@@ -43,7 +45,7 @@ class MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: "Profile",
+            label: "Profil",
           )
         ],
         onTap: (int index) {
