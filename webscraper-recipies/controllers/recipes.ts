@@ -14,7 +14,7 @@ class Recipes {
         Recipes.prototype.verifyParams(req,res);
         const numberMax: number = parseInt(String(req.query.numberMax));
         const marmitionRecipes = await getRecipes(numberMax);
-        const recipes = await recipesConverter(marmitionRecipes)
+        const recipes = await recipesConverter(marmitionRecipes);
         res.status(200).send({recipes}).end();
     }
 }

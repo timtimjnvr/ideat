@@ -31,7 +31,6 @@ Future<List<String>> fetchTitles(
 
   final WebScraper webScraper = WebScraper(url);
   bool loaded = false;
-  print("test bool");
 
   List<Map<String, dynamic>>? domElements = null;
 
@@ -69,14 +68,13 @@ Future<List<Product>> fetchAmazonProducts(
 
   List<String> titles = await fetchTitles(
       'https://www.amazon.fr',
-      '/s?k=' + productName+'&i='+ provider,
+      '/s?k=' + productName + '&i=' + provider,
       'div[data-component-type="s-search-result"] > * > span > * > * > *');
 
   for (var title in titles) {
-      try {
-        products.add(getProduct(title));
-      } catch (e) {}
-    
+    try {
+      products.add(getProduct(title));
+    } catch (e) {}
   }
   print(products);
   return products;

@@ -14,7 +14,7 @@ class PriceController extends ResourceController {
         request != null ? request!.path.variables['ingredientName'] : "";
 
     final List<Product> products = await getPrices(ingredientName!);
-    
+
     final List<Map<String, String?>> productJson = [];
 
     for (var element in products) {
@@ -26,7 +26,7 @@ class PriceController extends ResourceController {
       print(productJson.first);
       return Response.ok({"product": productJson.first});
     } else {
-      return Response.serverError();
+      return Response.ok({"product": "no price found"});
     }
   }
 }

@@ -1,9 +1,18 @@
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 RegExp unityRegex = RegExp(r'^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)\s([.àâa-zA-Z]*)');
 RegExp quantityRegex = RegExp(r'[0-9]{1,10}\s[a-zA-Z]*');
+
+Future<http.StreamedResponse> fetchSomething(String stringUrl) {
+  var url = Uri.parse(stringUrl);
+  http.Request request = http.Request("get", url);
+  request.headers.clear();
+  request.headers.addAll({"content-type": "application/json; charset=utf-8"});
+  return request.send();
+}
 
 class Ingredient {
   String unity = "";
@@ -63,24 +72,9 @@ List<String> unityWhiteList = [
   "morceaux"
 ];
 
-Future<http.StreamedResponse> fetchRecipes(String numberMax) {
-  var url = Uri.parse("http://localhost:8888/recipes?numberMax=" + numberMax);
-  http.Request request = new http.Request("get", url);
-  request.headers.clear();
-  request.headers.addAll({"content-type": "application/json; charset=utf-8"});
-  return request.send();
-}
-
-Future<http.StreamedResponse> fetchIngredientPrice(String ingredientName) {
-  var url = Uri.parse("http://localhost:8889/price/" + ingredientName);
-  http.Request request = new http.Request("get", url);
-  request.headers.clear();
-  request.headers.addAll({"content-type": "application/json; charset=utf-8"});
-  return request.send();
-}
-
 void main(List<String> arguments) async {
-  var recipes = await fetchRecipes("10");
+  var recipes =
+      await fetchSomething("http://localhost:8888/recipes?numberMax=10");
   var respRecipes = await recipes.stream.bytesToString();
   var decodedRecipes = json.decode(respRecipes);
   for (var recipe in decodedRecipes["recipes"]) {
@@ -89,11 +83,23 @@ void main(List<String> arguments) async {
       Ingredient ingredient = Ingredient.getIngredient(ingredientDescription);
       ingredients.add(ingredient);
     }
-    for (Ingredient ingredient in ingredients) {
-      var price = await fetchIngredientPrice(ingredient.name);
+    ingredients.map((ingredient) =>
+        fetchSomething("http://localhost:8889/price/" + ingredient.name));
+
+    List<Future<http.StreamedResponse>> futuresPrices = [];
+
+    for (var ingredient in ingredients) {
+      futuresPrices.add(
+          fetchSomething("http://localhost:8889/price/" + ingredient.name));
+    }
+
+    var res = await Future.wait(futuresPrices);
+
+    for (var price in res) {
       var respPrice = await price.stream.bytesToString();
       var decodedPrice = json.decode(respPrice);
       print(decodedPrice);
     }
+    break;
   }
 }
