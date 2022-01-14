@@ -25,7 +25,6 @@ class Ingredient {
       this.unity, this.quantity, this.descriptionIngredient, this.name);
 
   static Ingredient getIngredient(String ingredientDesciption) {
-    print(ingredientDesciption);
     var unityMatches = unityRegex.allMatches(ingredientDesciption);
 
     String unityString =
@@ -48,10 +47,6 @@ class Ingredient {
     } else {
       nameString = ingredientDesciption;
     }
-    print("unity:" + unityString);
-    print("quantity: " + quantityString);
-    print("name: " + nameString);
-    print("");
 
     return Ingredient._(
         unityString, quantityString, ingredientDesciption, nameString);
@@ -114,6 +109,16 @@ Future<dynamic> fetchRecipeIngredients(dynamic recipe) async {
   return recipe;
 }
 
+List<dynamic> computeRecipePrice(List<dynamic> recipes) {
+  for (var recipe in recipes) {
+    int price = 0;
+    for (var ingredient in recipe["ingredients"]) {
+      print(ingredient["price"]["product"]);
+    }
+  }
+  return recipes;
+}
+
 dynamic recipesMatching(int price) async {
   //get all recipes
   var recipes =
@@ -131,11 +136,13 @@ dynamic recipesMatching(int price) async {
 
   // compute price
 
+  List<dynamic> pricedRecipes = computeRecipePrice(results);
+
   return (results);
 }
 
 void main(List<String> arguments) async {
   int price = 20;
   dynamic recipes = await recipesMatching(price);
-  print(recipes);
+  //print(recipes);
 }
