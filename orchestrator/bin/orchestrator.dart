@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-RegExp unityRegex = RegExp(r'^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)\s([.àâa-zA-Z]*)');
+RegExp unityRegex =
+    RegExp(r'^[+-]?([0-9/]+\.?[0-9]*|\.[0-9]+)\s([.àâa-zA-Z]*)');
 RegExp quantityRegex = RegExp(r'[0-9]{1,10}\s[a-zA-Z]*');
 
 Future<http.StreamedResponse> fetchSomething(String stringUrl) {
@@ -18,7 +19,10 @@ class Ingredient {
   String unity = "";
   String quantity = "";
   String name = "";
-  Ingredient._(this.unity, this.quantity, this.name);
+  dynamic price;
+  String descriptionIngredient = "";
+  Ingredient._(
+      this.unity, this.quantity, this.descriptionIngredient, this.name);
 
   static Ingredient getIngredient(String ingredientDesciption) {
     print(ingredientDesciption);
@@ -49,7 +53,12 @@ class Ingredient {
     print("name: " + nameString);
     print("");
 
-    return Ingredient._(unityString, quantityString, nameString);
+    return Ingredient._(
+        unityString, quantityString, ingredientDesciption, nameString);
+  }
+
+  Map<String, dynamic> getJsonIngredient() {
+    return {"unity": unity, "quantity": quantity, "name": name, "price": price};
   }
 }
 
@@ -69,37 +78,64 @@ List<String> unityWhiteList = [
   "tasse",
   "sachet",
   "pincée",
-  "morceaux"
+  "morceaux",
+  "sachet",
+  "cac",
+  "c.a.c",
+  "c.à.c"
 ];
 
-void main(List<String> arguments) async {
+Future<dynamic> fetchIngredientPricing(Ingredient ingredient) async {
+  http.StreamedResponse price = await fetchSomething(
+      "http://localhost:8889/price/" + Uri.encodeComponent(ingredient.name));
+
+  var respPrice = await price.stream.bytesToString();
+  dynamic decodedPrice = json.decode(respPrice);
+
+  ingredient.price = decodedPrice;
+  return ingredient.getJsonIngredient();
+}
+
+Future<dynamic> fetchRecipeIngredients(dynamic recipe) async {
+  List<Ingredient> ingredients = [];
+  for (String ingredientDescription in recipe["ingredients"]) {
+    Ingredient ingredient = Ingredient.getIngredient(ingredientDescription);
+    ingredients.add(ingredient);
+  }
+
+  List<Future<dynamic>> futuresPrices = [];
+
+  for (var ingredient in ingredients) {
+    futuresPrices.add(fetchIngredientPricing(ingredient));
+  }
+
+  var res = await Future.wait(futuresPrices);
+  recipe["ingredients"] = res;
+  return recipe;
+}
+
+dynamic recipesMatching(int price) async {
+  //get all recipes
   var recipes =
       await fetchSomething("http://localhost:8888/recipes?numberMax=10");
   var respRecipes = await recipes.stream.bytesToString();
   var decodedRecipes = json.decode(respRecipes);
+
+  List<Future<dynamic>> recipeTasks = [];
+
   for (var recipe in decodedRecipes["recipes"]) {
-    List<Ingredient> ingredients = [];
-    for (String ingredientDescription in recipe["ingredients"]) {
-      Ingredient ingredient = Ingredient.getIngredient(ingredientDescription);
-      ingredients.add(ingredient);
-    }
-    ingredients.map((ingredient) =>
-        fetchSomething("http://localhost:8889/price/" + ingredient.name));
-
-    List<Future<http.StreamedResponse>> futuresPrices = [];
-
-    for (var ingredient in ingredients) {
-      futuresPrices.add(
-          fetchSomething("http://localhost:8889/price/" + ingredient.name));
-    }
-
-    var res = await Future.wait(futuresPrices);
-
-    for (var price in res) {
-      var respPrice = await price.stream.bytesToString();
-      var decodedPrice = json.decode(respPrice);
-      print(decodedPrice);
-    }
-    break;
+    recipeTasks.add(fetchRecipeIngredients(recipe));
   }
+
+  List<dynamic> results = await Future.wait(recipeTasks);
+
+  // compute price
+
+  return (results);
+}
+
+void main(List<String> arguments) async {
+  int price = 20;
+  dynamic recipes = await recipesMatching(price);
+  print(recipes);
 }
