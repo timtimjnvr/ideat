@@ -5,16 +5,17 @@ import recipesConverter from "../src/recipesConverter";
 
 class Recipes {
     verifyParams(req: Request, res: Response){
-        if(!(req.body.budget && req.body.numberMax)){
-            res.status(415).send({"error": "missing mandatory parameter"}).end();
+        if(!(req.query.numberMax)){
+            res.status(415).send({"error": "missing mandatory numberMax parameter"}).end();
         }
     }
     
     static async getRecipesHandler(req: Request, res: Response): Promise<void>{
+        console.log("[INFO] GET /recipes")
         Recipes.prototype.verifyParams(req,res);
-        const marmitionRecipes = await getRecipes(100);
-        const recipes = await recipesConverter(marmitionRecipes)
-        //console.log(recipes);
+        const numberMax: number = parseInt(String(req.query.numberMax));
+        const marmitionRecipes = await getRecipes(numberMax);
+        const recipes = await recipesConverter(marmitionRecipes);
         res.status(200).send({recipes}).end();
     }
 }
