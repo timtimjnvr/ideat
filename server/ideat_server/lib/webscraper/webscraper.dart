@@ -27,7 +27,6 @@ Product getProduct(String productDescription) {
   String unity = getString(productInfosMatches, 4);
 
   Product product = Product(title, productPrice, currency, unityPrice, unity);
-  print(product.getProduct());
   return product;
 }
 
@@ -68,8 +67,7 @@ Future<List<String>> fetchTitles(
   return titles;
 }
 
-Future<List<Product>> fetchAmazonProducts(
-    String productName, String provider) async {
+Future<List<Product>> fetchProducts(String productName, String provider) async {
   List<Product> products = [];
 
   List<String> titles = await fetchTitles(
