@@ -5,24 +5,30 @@ import 'dart:convert';
 import 'package:ideat_server/webscraper/product.dart';
 
 RegExp pricesRegex = RegExp(r'[0-9]{1,10},[0-9]{1,2}.€\/[^\s,)]{1,10}');
+RegExp newRegex = RegExp(
+    r'.([0-9]{1,10},[0-9]{1,2}).\s\(([0-9]{1,10},[0-9]{1,2}).(.)\/([^\s,)]{1,10})');
 
-//analyse Product Description to build the product Object
 Product getProduct(String productDescription) {
   var tab = productDescription.split("-");
-
   var title = tab[0];
   var restOfProductDescription = tab[1];
 
-  //looking for this type of expr : "9,39€ (117,38 €/"
-  //the first price is product price and the second unit price (kg/L or unity)
-  var stringPriceMatches = pricesRegex.allMatches(restOfProductDescription);
+  var productInfosMatches = newRegex.allMatches(restOfProductDescription);
 
-  var priceString = stringPriceMatches.first.group(0);
-  var tabPrices = priceString!.split("/");
-  var price = tabPrices[0];
-  var unity = tabPrices[1];
+  String getString(Iterable<RegExpMatch> matches, int index) {
+    return matches.isNotEmpty && matches.first.groupCount >= index
+        ? matches.first.group(index) ?? ""
+        : "";
+  }
 
-  return Product(title, price, unity);
+  String productPrice = getString(productInfosMatches, 1);
+  String unityPrice = getString(productInfosMatches, 2);
+  String currency = getString(productInfosMatches, 3);
+  String unity = getString(productInfosMatches, 4);
+
+  Product product = Product(title, productPrice, currency, unityPrice, unity);
+  print(product.getProduct());
+  return product;
 }
 
 Future<List<String>> fetchTitles(
