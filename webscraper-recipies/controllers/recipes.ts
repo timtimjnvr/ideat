@@ -1,12 +1,19 @@
+import { stringLiteral, tsParameterProperty } from "@babel/types";
 import {Request, Response } from "express";
 import RequestModule from "framework7/types/modules/request/request";
 import getRecipes from "../src/getRecipes";
 import recipesConverter from "../src/recipesConverter";
 
+var availableRecipePrices = ['CHEAP', 'EXPENSIVE','MEDIUM'];
+var availableRecipesDificulties = ['EASY', 'MEDIUM', 'HARD', 'VERY_HARD'];
+var avalableRecipeType= ['ADVICE', 'BEVERAGE','CANDY','DESSERT','MAIN_COURSE','SAUCE','SIDE_DISH','STARTER'];
+
 class Recipes {
     verifyParams(req: Request, res: Response){
-        if(!(req.query.numberMax)){
-            res.status(415).send({"error": "missing mandatory numberMax parameter"}).end();
+        let budget, name, recipePrice, recipeDifficulty, cookingTime
+
+        if(!(req.query.budget)){
+            res.status(415).send({"error": "missing mandatory budget parameter"}).end();
         }
     }
     
