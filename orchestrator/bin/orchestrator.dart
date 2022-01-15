@@ -4,6 +4,6 @@ import 'package:orchestrator/orchestrator.dart';
 
 void main(List<String> arguments) async {
   int budget = 100;
-  dynamic recipes = await getRecipes(budget);
+  dynamic recipes = await searchRecipes(budget);
   print(recipes);
 }

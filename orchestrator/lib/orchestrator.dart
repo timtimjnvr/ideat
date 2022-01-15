@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'ingredient.dart';
 import 'fetcher.dart';
 
-Future<dynamic> getIngredientsInformations(dynamic recipe) async {
+Future<dynamic> getRecipesWithIngredientsPrices(dynamic recipe) async {
   List<Ingredient> ingredients = [];
 
   for (String ingredientDescription in recipe["ingredients"]) {
@@ -20,14 +20,12 @@ Future<dynamic> getIngredientsInformations(dynamic recipe) async {
     futuresPrices.add(ingredient.fetchIngredientPricing(ingredient));
   }
 
-  var res = await Future.wait(futuresPrices);
-  recipe["ingredients"] = res;
+  var ingredientWithPrice = await Future.wait(futuresPrices);
+  recipe["ingredients"] = ingredientWithPrice;
   return recipe;
 }
 
-dynamic computeRecipePrice(dynamic recipe) {
-  double price = 0;
-
+dynamic getRecipeWithPrice(dynamic recipe) {
   double getPrice(dynamic ingredient) {
     print(ingredient);
     double price = 0;
@@ -40,25 +38,29 @@ dynamic computeRecipePrice(dynamic recipe) {
     return (price);
   }
 
-  for (var ingredient in recipe["ingredients"]) {
+  Iterable<dynamic> ingredients = recipe["ingredients"];
+
+  double price = 0;
+  for (dynamic ingredient in ingredients) {
     price = price + getPrice(ingredient);
   }
+
   recipe["recipePrice"] = price;
   return recipe;
 }
 
-List<dynamic> computeRecipesPrice(List<dynamic> recipes) {
-  int index = 0;
+List<dynamic> getRecipesWithPrice(List<dynamic> recipes) {
+  List<dynamic> recipesWithprice = [];
   for (dynamic recipe in recipes) {
-    dynamic recipePriced = computeRecipePrice(recipe);
-    recipes[index] = recipePriced;
-    index = index + 1;
+    dynamic recipeWithprice = getRecipeWithPrice(recipe);
+    recipesWithprice.add(recipeWithprice);
   }
-  return recipes;
+  return recipesWithprice;
 }
 
 List<dynamic> filterRecipes(int budget, List<dynamic> recipes) {
   List<dynamic> filteredRecipes = [];
+
   for (dynamic recipe in recipes) {
     if (recipe["recipePrice"] <= budget) {
       filteredRecipes.add(recipe);
@@ -68,22 +70,25 @@ List<dynamic> filterRecipes(int budget, List<dynamic> recipes) {
 }
 
 Future<List<dynamic>> getRecipes() async {
-  var recipes = await getSomething("http://localhost:8888/recipes?numberMax=1");
+  dynamic json =
+      await getSomething("http://localhost:8888/recipes?numberMax=1");
 
-  List<Future<dynamic>> recipeTasks = [];
+  List<Future<dynamic>> recipesPriceTasks = [];
 
-  for (var recipe in recipes["recipes"]) {
-    recipeTasks.add(getIngredientsInformations(recipe));
+  for (var recipe in json["recipes"]) {
+    recipesPriceTasks.add(getRecipesWithIngredientsPrices(recipe));
   }
 
-  List<dynamic> results = await Future.wait(recipeTasks);
+  List<dynamic> recipesWithIngredientPrices =
+      await Future.wait(recipesPriceTasks);
 
-  List<dynamic> pricedRecipes = computeRecipesPrice(results);
+  List<dynamic> pricesWithRecipes =
+      getRecipesWithPrice(recipesWithIngredientPrices);
 
-  return pricedRecipes;
+  return pricesWithRecipes;
 }
 
-dynamic getRecipes(int budget) async {
+dynamic searchRecipes(int budget) async {
   List<dynamic> recipes = await getRecipes();
 
   List<dynamic> filteredRecipes = filterRecipes(budget, recipes);
