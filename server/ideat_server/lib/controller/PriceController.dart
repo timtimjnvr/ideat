@@ -30,9 +30,7 @@ class PriceController extends ResourceController {
       //we assume that first product from list best suites request
       return Response.ok({"product": productJson.first});
     } else {
-      return Response.ok({
-        "product": {"title": ingredientName, "price": "0 €"}
-      });
+      return Response.ok({"info": "no products for " + ingredientName});
     }
   }
 }

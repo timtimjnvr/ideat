@@ -8,12 +8,9 @@ RegExp pricesRegex = RegExp(r'[0-9]{1,10},[0-9]{1,2}.€\/[^\s,)]{1,10}');
 RegExp newRegex = RegExp(
     r'.([0-9]{1,10},[0-9]{1,2}).\s\(([0-9]{1,10},[0-9]{1,2}).(.)\/([^\s,)]{1,10})');
 
-Product getProduct(String productDescription) {
-  var tab = productDescription.split("-");
-  var title = tab[0];
-  var restOfProductDescription = tab[1];
-
-  var productInfosMatches = newRegex.allMatches(restOfProductDescription);
+Product? getProduct(String productDescription) {
+  print(productDescription);
+  var productInfosMatches = newRegex.allMatches(productDescription);
 
   String getString(Iterable<RegExpMatch> matches, int index) {
     return matches.isNotEmpty && matches.first.groupCount >= index
@@ -25,9 +22,11 @@ Product getProduct(String productDescription) {
   String unityPrice = getString(productInfosMatches, 2);
   String currency = getString(productInfosMatches, 3);
   String unity = getString(productInfosMatches, 4);
-
-  Product product = Product(title, productPrice, currency, unityPrice, unity);
-  return product;
+  if (productPrice != "" && unityPrice != "" && currency != "" && unity != "") {
+    Product product =
+        Product(productDescription, productPrice, currency, unityPrice, unity);
+    return product;
+  }
 }
 
 Future<List<String>> fetchTitles(
@@ -77,7 +76,7 @@ Future<List<Product>> fetchProducts(String productName, String provider) async {
 
   for (var title in titles) {
     try {
-      products.add(getProduct(title));
+      products.add(getProduct(title)!);
     } catch (e) {}
   }
   return products;
