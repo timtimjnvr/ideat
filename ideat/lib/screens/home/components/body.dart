@@ -19,7 +19,7 @@ class Body extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .headline5
-                .copyWith(fontWeight: FontWeight.bold),
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         Categories(),

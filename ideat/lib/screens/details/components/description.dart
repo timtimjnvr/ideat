@@ -5,8 +5,8 @@ import '../../../constants.dart';
 
 class Description extends StatelessWidget {
   const Description({
-    Key key,
-    @required this.product,
+    Key? key,
+    required this.product,
   }) : super(key: key);
 
   final Product product;
@@ -22,8 +22,8 @@ class Description extends StatelessWidget {
 
 class Ingredients extends StatelessWidget {
   const Ingredients({
-    Key key,
-    @required this.product,
+    Key? key,
+    required this.product,
   }) : super(key: key);
 
   final Product product;

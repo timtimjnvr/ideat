@@ -5,8 +5,8 @@ import '../../../constants.dart';
 
 class ProductTitleWithImage extends StatelessWidget {
   const ProductTitleWithImage({
-    Key key,
-    @required this.product,
+    Key? key,
+    required this.product,
   }) : super(key: key);
 
   final Product product;
@@ -27,7 +27,7 @@ class ProductTitleWithImage extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .headline4
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: kDefaultPaddin),
           Row(
@@ -38,7 +38,7 @@ class ProductTitleWithImage extends StatelessWidget {
                     TextSpan(text: "Prix\n"),
                     TextSpan(
                       text: "\€${product.price}",
-                      style: Theme.of(context).textTheme.headline4.copyWith(
+                      style: Theme.of(context).textTheme.headline4?.copyWith(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ],
