@@ -7,6 +7,29 @@ RegExp unityRegex =
     RegExp(r'^[+-]?([0-9/]+\.?[0-9]*|\.[0-9]+)\s([.àâa-zA-Z]*)');
 RegExp quantityRegex = RegExp(r'[0-9]{1,10}\s[a-zA-Z]*');
 
+List<String> unityWhiteList = [
+  "g",
+  "kg",
+  "ml",
+  "dl",
+  "l",
+  "c.à.s",
+  "cas",
+  "c.a.s",
+  "cuillère",
+  "cuillere",
+  "morceaux",
+  "verre",
+  "tasse",
+  "sachet",
+  "pincée",
+  "morceaux",
+  "sachet",
+  "cac",
+  "c.a.c",
+  "c.à.c"
+];
+
 Future<http.StreamedResponse> fetchSomething(String stringUrl) {
   var url = Uri.parse(stringUrl);
   http.Request request = http.Request("get", url);
@@ -57,29 +80,6 @@ class Ingredient {
   }
 }
 
-List<String> unityWhiteList = [
-  "g",
-  "kg",
-  "ml",
-  "dl",
-  "l",
-  "c.à.s",
-  "cas",
-  "c.a.s",
-  "cuillère",
-  "cuillere",
-  "morceaux",
-  "verre",
-  "tasse",
-  "sachet",
-  "pincée",
-  "morceaux",
-  "sachet",
-  "cac",
-  "c.a.c",
-  "c.à.c"
-];
-
 Future<dynamic> fetchIngredientPricing(Ingredient ingredient) async {
   http.StreamedResponse price = await fetchSomething(
       "http://localhost:8889/price/" + Uri.encodeComponent(ingredient.name));
@@ -109,20 +109,47 @@ Future<dynamic> fetchRecipeIngredients(dynamic recipe) async {
   return recipe;
 }
 
-List<dynamic> computeRecipePrice(List<dynamic> recipes) {
-  for (var recipe in recipes) {
-    int price = 0;
-    for (var ingredient in recipe["ingredients"]) {
-      print(ingredient["price"]["product"]);
-    }
+double getIngredientPrice(String priceDescription) {
+  String stringPrice = priceDescription.split("€")[0].replaceAll(',', '.');
+  double price = double.parse(stringPrice);
+  return price;
+}
+
+dynamic computeRecipePrice(dynamic recipe) {
+  double price = 0;
+  for (var ingredient in recipe["ingredients"]) {
+    double ingredientPrice =
+        getIngredientPrice(ingredient["price"]["product"]["price"]);
+    price = price + ingredientPrice;
+  }
+  recipe["recipePrice"] = price;
+  return recipe;
+}
+
+List<dynamic> computeRecipesPrice(List<dynamic> recipes) {
+  int index = 0;
+  for (dynamic recipe in recipes) {
+    dynamic recipePriced = computeRecipePrice(recipe);
+    recipes[index] = recipePriced;
+    index = index + 1;
   }
   return recipes;
 }
 
-dynamic recipesMatching(int price) async {
+List<dynamic> filterRecipes(int budget, List<dynamic> recipes) {
+  List<dynamic> filteredRecipes = [];
+  for (dynamic recipe in recipes) {
+    if (recipe["recipePrice"] <= budget) {
+      filteredRecipes.add(recipe);
+    }
+  }
+  return filteredRecipes;
+}
+
+dynamic getRecipes(int budget) async {
   //get all recipes
   var recipes =
-      await fetchSomething("http://localhost:8888/recipes?numberMax=10");
+      await fetchSomething("http://localhost:8888/recipes?numberMax=1");
   var respRecipes = await recipes.stream.bytesToString();
   var decodedRecipes = json.decode(respRecipes);
 
@@ -135,14 +162,15 @@ dynamic recipesMatching(int price) async {
   List<dynamic> results = await Future.wait(recipeTasks);
 
   // compute price
+  List<dynamic> pricedRecipes = computeRecipesPrice(results);
 
-  List<dynamic> pricedRecipes = computeRecipePrice(results);
+  List<dynamic> filteredRecipes = filterRecipes(budget, pricedRecipes);
 
-  return (results);
+  return (pricedRecipes);
 }
 
 void main(List<String> arguments) async {
-  int price = 20;
-  dynamic recipes = await recipesMatching(price);
-  //print(recipes);
+  int budget = 100;
+  dynamic recipes = await getRecipes(budget);
+  print(recipes);
 }

@@ -18,15 +18,15 @@ class PriceController extends ResourceController {
     final List<Map<String, String?>> productJson = [];
 
     for (var element in products) {
-      print(element.getProduct());
       productJson.add(element.getProduct());
     }
     if (productJson.length != 0) {
       //we suppose that first product from list best suites request
-      print(productJson.first);
       return Response.ok({"product": productJson.first});
     } else {
-      return Response.ok({"product": "no price found"});
+      return Response.ok({
+        "product": {"title": ingredientName, "price": "0 €"}
+      });
     }
   }
 }

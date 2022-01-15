@@ -11,6 +11,7 @@ class Recipes {
     }
     
     static async getRecipesHandler(req: Request, res: Response): Promise<void>{
+        console.log("[INFO] GET /recipes")
         Recipes.prototype.verifyParams(req,res);
         const numberMax: number = parseInt(String(req.query.numberMax));
         const marmitionRecipes = await getRecipes(numberMax);
