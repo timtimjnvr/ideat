@@ -9,7 +9,6 @@ RegExp newRegex = RegExp(
     r'.([0-9]{1,10},[0-9]{1,2}).\s\(([0-9]{1,10},[0-9]{1,2}).(.)\/([^\s,)]{1,10})');
 
 Product? getProduct(String productDescription) {
-  print(productDescription);
   var productInfosMatches = newRegex.allMatches(productDescription);
 
   String getString(Iterable<RegExpMatch> matches, int index) {
@@ -60,8 +59,6 @@ Future<List<String>> fetchTitles(
     for (var domElement in domElements) {
       titles.add(domElement['title'] as String);
     }
-  } else {
-    print("page not loaded");
   }
   return titles;
 }
