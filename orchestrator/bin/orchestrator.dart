@@ -4,6 +4,15 @@ import 'package:orchestrator/orchestrator.dart';
 
 void main(List<String> arguments) async {
   int budget = 100;
-  dynamic recipes = await searchRecipes(budget);
+  Map<String, String> params = {
+    "name": "",
+    "cookingTime": "129",
+    "recipeDiffuculty": "EASY",
+    "numberMax": "1",
+    "recipeType": "platprincipal"
+  };
+
+  dynamic recipes = await searchRecipes(params, budget);
+
   print(recipes);
 }
