@@ -27,7 +27,6 @@ Future<dynamic> getRecipesWithIngredientsPrices(dynamic recipe) async {
 
 dynamic getRecipeWithPrice(dynamic recipe) {
   double getPrice(dynamic ingredient) {
-    print(ingredient);
     double price = 0;
     try {
       price = double.parse(
@@ -69,9 +68,8 @@ List<dynamic> filterRecipes(int budget, List<dynamic> recipes) {
   return filteredRecipes;
 }
 
-Future<List<dynamic>> getRecipes() async {
-  dynamic json =
-      await getSomething("http://localhost:8888/recipes?numberMax=1");
+Future<List<dynamic>> getRecipes(String url) async {
+  dynamic json = await getSomething(url);
 
   List<Future<dynamic>> recipesPriceTasks = [];
 
@@ -88,8 +86,14 @@ Future<List<dynamic>> getRecipes() async {
   return pricesWithRecipes;
 }
 
-dynamic searchRecipes(int budget) async {
-  List<dynamic> recipes = await getRecipes();
+dynamic searchRecipes(Map<String, String> params, int budget) async {
+  String url = "http://localhost:8888/recipes?";
+
+  params.forEach((key, value) {
+    url += key + "=" + value + "&";
+  });
+
+  List<dynamic> recipes = await getRecipes(url);
 
   List<dynamic> filteredRecipes = filterRecipes(budget, recipes);
 
