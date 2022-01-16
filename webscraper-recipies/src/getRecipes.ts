@@ -42,9 +42,11 @@ class query{
     }
 }
 
-const getRecipes = async (numberMax: number) => { 
-    const q = new query('tarte', 'CHEAP',undefined,"dessert",45);
-    
+const getRecipes = async (searchParams : Array<string>, numberMax: number) => { 
+    let number = numberMax as unknown as number;
+    //const q = new query('tarte', 'CHEAP',undefined,"dessert",45);
+    const q = new query(searchParams[0], searchParams[1],searchParams[2],searchParams[3],searchParams[4] as unknown as number);
+
     return await searchRecipes(q.getQuery(), { limit: numberMax });
 };
 
