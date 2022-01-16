@@ -4,8 +4,6 @@ Project to retrieve recipes idea below your budget.
 
 ## Project architecture
 
-![Architecture](doc/architecture.png)
-
 ## Infos about orchestrator use
 
 ### Use exemple :
