@@ -1,3 +1,10 @@
+# 1.1.1 - 16-1-2022
+
+## Unclassified Changes
+
+- feat : choose recipe parameters ([#44](https://github.com/timtimjnvr/ideat/issues44))
+- feat : orchestrator - get Recipes matching a budget  ([#41](https://github.com/timtimjnvr/ideat/issues41))
+
 # 1.1.0 - 10-1-2022
 
 ## Unclassified Changes
