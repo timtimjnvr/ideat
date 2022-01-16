@@ -10,7 +10,6 @@ var availableRecipesDificulties : Array<string> = ['EASY', 'MEDIUM', 'HARD', 'VE
 var availableRecipeType: Array<string> = ["conseil", "boisson","confiserie","dessert","platprincipal","sauce", "accompagnement", "entree"];
 
 class Recipes {
-
     verifyParam(paramValue: string , availablePossibilities : Array<string>) : boolean{
         if(availablePossibilities.includes(paramValue) || !paramValue){
             return true;
