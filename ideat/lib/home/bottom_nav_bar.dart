@@ -43,7 +43,7 @@ class MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: "Emails",
+            label: "Settings",
           ),
         ],
         onTap: (int index) {
