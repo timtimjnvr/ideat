@@ -73,12 +73,14 @@ void dispose() {
   super.dispose();
 }
 
-void search(String term){
+ List<Product> search(String term){
+  List<Product> searchOutput = [];
   products.forEach((p) {
    if (p.title == term ) {
-       searchResult.add(p);  
+       searchOutput.add(p);  
    }
   });
+  return searchOutput;
 }
 
  @override
@@ -108,9 +110,10 @@ void search(String term){
           setState(() {
             addSearchTerm(query);
             selectedTerm = query;
+            searchResult = search(selectedTerm);
+            print("this is a test");
           });
           controller.close();
-          search(selectedTerm);
         },
         builder: (context, transition) {
           return ClipRRect(
