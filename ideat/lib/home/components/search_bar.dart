@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ideat/screens/home/components/body.dart';
+import 'package:ideat/screens/home/home_screen.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:ideat/models/Product.dart';
 
 //https://resocoder.com/2021/01/23/search-bar-in-flutter-logic-material-ui/#t-1611176327031
 
@@ -18,6 +21,7 @@ class _SearchBarPageState extends State<SearchBar> {
   ];
 
   late List<String> filteredSearchHistory;
+  late List<Product> searchResult = products;
 
    String selectedTerm = "";
 
@@ -69,20 +73,26 @@ void dispose() {
   super.dispose();
 }
 
+void search(String term){
+  products.forEach((p) {
+   if (p.title == term ) {
+       searchResult.add(p);  
+   }
+  });
+}
+
  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FloatingSearchBar(
         controller: controller,
         body: FloatingSearchBarScrollNotifier(
-          child: SearchResultsListView(
-            searchTerm: selectedTerm,
-          ),
+          child: Body(searchResult),
         ),
         transition: CircularFloatingSearchBarTransition(),
         physics: BouncingScrollPhysics(),
         title: Text(
-          selectedTerm ?? 'The Search App',
+          selectedTerm,
           style: Theme.of(context).textTheme.headline6,
         ),
         hint: 'Search and find out...',
@@ -100,6 +110,7 @@ void dispose() {
             selectedTerm = query;
           });
           controller.close();
+          search(selectedTerm);
         },
         builder: (context, transition) {
           return ClipRRect(
@@ -207,15 +218,6 @@ class SearchResultsListView extends StatelessWidget {
     final fsb = FloatingSearchBar.of(context);
 
     var height;
-    return ListView(
-      //padding: EdgeInsets.only(top: fsb?.height + fsb!.margins.vertical),
-      children: List.generate(
-        50,
-        (index) => ListTile(
-          title: Text('$searchTerm search result'),
-          subtitle: Text(index.toString()),
-        ),
-      ),
-    );
+    return Body(products);
   }
 }

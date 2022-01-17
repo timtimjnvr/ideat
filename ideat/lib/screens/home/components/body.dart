@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ideat/constants.dart';
-import 'package:ideat/models/Product.dart';
 import 'package:ideat/screens/details/details_screen.dart';
-
-import 'categorries.dart';
+import 'package:ideat/models/Product.dart';
+import 'categories.dart';
 import 'item_card.dart';
 
 class Body extends StatelessWidget {
+  final List<Product> products;
+  const Body( 
+    //Key? key,
+    this.products,
+  );
   @override
   Widget build(BuildContext context) {
     return Column(
