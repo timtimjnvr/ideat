@@ -15,10 +15,7 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarPageState extends State<SearchBar> {
   static const historyLength = 5;
-  List<String> _searchHistory = [
-    'Chicken',
-    'Beef',
-  ];
+  final List<String> _searchHistory = [];
 
   late List<String> filteredSearchHistory;
   late List<Product> searchResult = products;
@@ -75,11 +72,11 @@ void dispose() {
 
  List<Product> search(String term){
   List<Product> searchOutput = [];
-  products.forEach((p) {
-   if (p.title == term ) {
+  for (var p in products) {
+   if (p.title.contains(RegExp(term, caseSensitive: false))) {
        searchOutput.add(p);  
    }
-  });
+  }
   return searchOutput;
 }
 
