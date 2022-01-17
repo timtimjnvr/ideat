@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ideat/constants.dart';
 import 'package:ideat/screens/details/details_screen.dart';
 import 'package:ideat/models/Product.dart';
-import 'categories.dart';
+import '../../details/uselessstuff/categories.dart';
 import 'item_card.dart';
 
 class Body extends StatelessWidget {
@@ -26,7 +26,8 @@ class Body extends StatelessWidget {
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
-        Categories(),
+        const SizedBox(height: 35),
+        //Categories(),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),

@@ -14,10 +14,10 @@ class CastList extends StatefulWidget {
 
 class CastListState extends State<CastList> {
   final List<Food> _cast = <Food>[
-    const Food('Poulet'),
-    const Food('Alexander Hamilton'),
-    const Food('Eliza Hamilton'),
-    const Food('James Madison'),
+    const Food('Chicken'),
+    const Food('Beef'),
+    const Food('Zucchini'),
+    const Food('Boulgour'),
   ];
 
   Iterable<Widget> get actorWidgets sync* {
@@ -41,16 +41,16 @@ class CastListState extends State<CastList> {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      Text("Ingredients you dislike"),
+      const Text("Ingredients you dislike"),
       Wrap(
        children: actorWidgets.toList(),
     ),
     ElevatedButton(
-  onPressed: () {setState((){_cast.add(const Food("Les endives"));});},
-  child: Text('+'),
+  onPressed: () {setState((){_cast.add(const Food("Chicory"));});},
+  child: const Text('+'),
   style: ElevatedButton.styleFrom(
-    shape: CircleBorder(),
-    padding: EdgeInsets.all(12),
+    shape: const CircleBorder(),
+    padding: const EdgeInsets.all(12),
     primary: Colors.grey,
   ),
 
@@ -70,9 +70,14 @@ class BlackList extends StatefulWidget {
 class _MyStatefulWidgetState extends State<BlackList> {
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Diet preferences"),
+      ),
+      body: Column(children: const <Widget>[
       CastList(),
       Text('This is a test')
-    ],);
+    ],)
+    );
   }
 }

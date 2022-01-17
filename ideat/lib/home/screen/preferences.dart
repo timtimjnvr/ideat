@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ideat/home/screen/blank_page.dart';
+import 'package:ideat/home/screen/black_list.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class Preferences extends StatefulWidget {
-  Preferences({Key? key}) : super(key: key);
+  const Preferences({Key? key}) : super(key: key);
 
   @override
   _PreferencesPageState createState() => _PreferencesPageState();
@@ -13,29 +13,29 @@ class _PreferencesPageState extends State<Preferences> {
   bool isSwitched = false;
   changePage() {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder:(context) => BlankPage()));
+        .push(MaterialPageRoute(builder:(context) => const BlackList()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("settings Page"),
+        title: const Text("Settings page"),
       ),
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: Text('Preferences'),
+            title: const Text('Preferences'),
             tiles: [
               SettingsTile(
-                title: Text('Diet'),
-                value: Text('None'),
-                leading: Icon(Icons.food_bank),
+                title: const Text('Diet'),
+                value: const Text('None'),
+                leading: const Icon(Icons.food_bank),
                 onPressed: (BuildContext context) {},
               ),
               SettingsTile(
-                title: Text('Disliked ingredients'),
-                leading: Icon(Icons.no_meals),
+                title: const Text('Disliked ingredients'),
+                leading: const Icon(Icons.no_meals),
                 onPressed: (BuildContext context) {
                   changePage();
                 },
@@ -43,21 +43,21 @@ class _PreferencesPageState extends State<Preferences> {
             ],
           ),
           SettingsSection(
-            title: Text('Settings'),
+            title: const Text('Settings'),
             tiles: [
               SettingsTile(
-                title: Text('Change password'),
-                leading: Icon(Icons.lock),
+                title: const Text('Change password'),
+                leading: const Icon(Icons.lock),
                 onPressed: (BuildContext context) {},
               ),
               SettingsTile(
-                title: Text('Change email'),
-                leading: Icon(Icons.lock),
+                title: const Text('Change email'),
+                leading: const Icon(Icons.lock),
                 onPressed: (BuildContext context) {},
               ),
               SettingsTile.switchTile(
-                title: Text('Notifications'),
-                leading: Icon(Icons.notifications_active),
+                title: const Text('Notifications'),
+                leading: const Icon(Icons.notifications_active),
                 initialValue: true,
                 onToggle: (value) {},
               ),

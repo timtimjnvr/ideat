@@ -12,8 +12,6 @@ class Categories extends StatefulWidget {
 class _CategoriesState extends State<Categories> {
   List<String> categories = [
     "Recettes",
-    "Liste des courses",
-    "Ajouter une recette",
     "Paramètres"
   ];
   // By default our first item will be selected
