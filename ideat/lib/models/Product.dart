@@ -1,4 +1,12 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:orchestrator/orchestrator.dart';
+import 'dart:async';
+
+
 
 class Product {
   final String image, title, description;
@@ -16,8 +24,35 @@ class Product {
     required this.color,
     required this.ingredients,
   });
+    factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: 1,
+      image: "assets/images/empty.jpeg",
+      title: "dummy",
+      price: 1,
+      description: "Lorem ipsum",
+      size: 5,
+      color: Color(0xFFE6B398),
+      ingredients: ['Lorem',"Ipsum"]
+    );
+  }
 }
 
+Future<Product> fetchReceipes() async {
+    int budget = 100;
+  Map<String, String> params = {
+    "name": "",
+    "cookingTime": "129",
+    "recipeDiffuculty": "EASY",
+    "numberMax": "1",
+    "recipeType": "platprincipal"
+  };
+  dynamic recipes = searchRecipes(params, budget);
+  return Product.fromJson(jsonDecode(recipes.body));
+}
+// ignore: must_be_immutable
+class Products extends StatelessWidget {
+//Future<Product> futureProduct = fetchReceipes();
 List<Product> products = [
   Product(
       id: 1,
@@ -42,7 +77,7 @@ List<Product> products = [
       title: "Tarte pommes râpées citrons",
       price: 22,
       size: 5,
-      description: dummyText,
+      description: "blabla",
       image: "assets/images/bag_2.jpeg",
       color: Color(0xFFD3A984),
       ingredients: [
@@ -58,7 +93,7 @@ List<Product> products = [
       title: "Pâte à crêpes (des plus raffinées)",
       price: 16,
       size: 5,
-      description: dummyText,
+      description: "blabla",
       image: "assets/images/bag_3.png",
       color: Color(0xFF989493),
       ingredients: [
@@ -90,7 +125,7 @@ List<Product> products = [
       title: "Hachis Parmentier",
       price: 234,
       size: 12,
-      description: dummyText,
+      description: "blabla",
       image: "assets/images/bag_5.png",
       color: Color(0xFFFB7883),
       ingredients: [
@@ -107,7 +142,7 @@ List<Product> products = [
     title: "Tarte à la rhubarbe meringuée alsacienne",
     price: 234,
     size: 12,
-    description: dummyText,
+    description: "blabla",
     image: "assets/images/bag_6.jpeg",
     color: Color(0xFFAEAEAE),
     ingredients: [
@@ -120,6 +155,15 @@ List<Product> products = [
     ],
   ),
 ];
-String dummyText = "blabla";
+
 String DEStext =
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since. When an unknown printer took a galley.";
+    "Lorem Ipsum";
+
+  Products({Key? key}) : super(key: key);
+       @override
+   Widget build(BuildContext context) {
+     return Container(
+       
+     );
+   }
+}

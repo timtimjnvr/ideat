@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ideat/constants.dart';
 import 'package:ideat/screens/details/details_screen.dart';
 import 'package:ideat/models/Product.dart';
-import '../../details/uselessstuff/categories.dart';
 import 'item_card.dart';
 
 class Body extends StatelessWidget {
@@ -11,6 +10,7 @@ class Body extends StatelessWidget {
     //Key? key,
     this.products,
   );
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +33,7 @@ class Body extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: kDefaultPaddin),
             child: GridView.builder(
                 itemCount: products.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: kDefaultPaddin,
                   crossAxisSpacing: kDefaultPaddin,

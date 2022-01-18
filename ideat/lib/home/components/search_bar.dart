@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ideat/screens/home/components/body.dart';
-import 'package:ideat/screens/home/home_screen.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:ideat/models/Product.dart';
 
@@ -15,11 +14,12 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarPageState extends State<SearchBar> {
   static const historyLength = 5;
+  final products_class = Products();
+  late List<Product> products_list = products_class.products;
+  late List<Product> searchResult = products_list;
   final List<String> _searchHistory = [];
 
   late List<String> filteredSearchHistory;
-  late List<Product> searchResult = products;
-
    String selectedTerm = "";
 
   List<String> filterSearchTerms({
@@ -72,7 +72,7 @@ void dispose() {
 
  List<Product> search(String term){
   List<Product> searchOutput = [];
-  for (var p in products) {
+  for (var p in products_list) {
    if (p.title.contains(RegExp(term, caseSensitive: false))) {
        searchOutput.add(p);  
    }
@@ -108,7 +108,6 @@ void dispose() {
             addSearchTerm(query);
             selectedTerm = query;
             searchResult = search(selectedTerm);
-            print("this is a test");
           });
           controller.close();
         },
@@ -184,40 +183,5 @@ void dispose() {
         },
       ),
     );
-  }
-}
-
-class SearchResultsListView extends StatelessWidget {
-  final String searchTerm;
-
-  const SearchResultsListView({
-    Key? key,
-    required this.searchTerm,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (searchTerm == null) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.search,
-              size: 64,
-            ),
-            Text(
-              'Start searching',
-              style: Theme.of(context).textTheme.headline5,
-            )
-          ],
-        ),
-      );
-    }
-
-    final fsb = FloatingSearchBar.of(context);
-
-    var height;
-    return Body(products);
   }
 }
