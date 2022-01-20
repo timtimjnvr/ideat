@@ -56,6 +56,7 @@ Future<List<String>> fetchTitles(
   loaded = loaded && domElements != null && domElements.length != 0;
 
   if (loaded) {
+    print("hey");
     for (var domElement in domElements) {
       titles.add(domElement['title'] as String);
     }
@@ -69,7 +70,7 @@ Future<List<Product>> fetchProducts(String productName, String provider) async {
   List<String> titles = await fetchTitles(
       'https://www.amazon.fr',
       '/s?k=' + productName + '&i=' + provider,
-      'div[data-component-type="s-search-result"] > * > span > * > * > *');
+      'div[data-component-type="s-search-result"] > * > * > * > * > *');
 
   for (var title in titles) {
     try {
